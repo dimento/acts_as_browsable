@@ -1,0 +1,72 @@
+ActsAsBrowsable
+================
+
+ActsAsBrowsable extends a model to get the previous or next object of a recent object. With 
+the inlcuded helper methods you can easily implement a next and previous navigation for posts 
+in your blog system.
+
+What’s so special? Read on!
+
+You can also define fields that have to have the same value as the recent object. For example, 
+you can implement a next and previous navigation for your post in your blog that links only 
+to the next and previous posts of the same category.
+
+
+Usage
+=====
+
+Specify a model as “acts_as_browsable” to get the browsable functionality for it. To 
+determine fields/attributes values that have to be equal for the next or previous 
+object, assign <tt>:equal_fields</tt> with an array of desired fields. You can also define
+the <tt>:order</tt>.
+
+The following is the default usage
+
+	class Post < ActiveRecord::Base
+		acts_as_browsable
+	end
+
+This is all you need to get the following methods:
+
+	post.next 									# => returns the next post
+	post.next 									# => returns the previous post
+	post.next_by(:title) 				# => returns the next post ordered by title
+	post.next_by(:category_id) 	# => returns the previous post ordered by category_id
+	
+There is also a more neutral method you can use for your own control structures.
+
+	post.step_by( :title, :previous ) # => returns the next post ordered by title
+	
+
+The following usage ensures to return only those objects with the same attribute values for 
+language and customer_id of the recent object.
+
+	class Post < ActiveRecord::Base
+		acts_as_browsable :equal_fields => [ :language, :customer_id ]
+	end
+	
+
+View helper usage
+=================
+	
+ActsAsBrowsable includes a highly configurable helper method
+
+To return a complete browsable navigation you need the folling in your view
+
+	<%= browsable @post %>
+	
+configuration options are:
+
+* wrapper - the wrapping HTML element for both links. :ul is default
+* class - the HTML class for the wrapping HTML element. 'browsable' is default
+* element - the wrapping element for each link. :li is default
+* previous_class - the HTML class for the wrapping HTML element of the previous-link
+* next_class -  - the HTML class for the wrapping HTML element of each next-link
+* previous_label - the text/label for the previous-link
+* next_label - the text/label for the next-link
+
+Configuration example:
+	
+	<%= browsable @post, {:class => "my_own_class", :previous_label => "The post before this post" } %>
+
+Copyright (c) 2009 dimento.com, released under the MIT license
