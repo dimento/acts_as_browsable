@@ -13,22 +13,34 @@ class BrowsableTest < ActiveSupport::TestCase
     
       should "have the second as next bean" do
         assert_equal @first.next, @second
+        [:text, :number].each do |f|
+          assert_equal @first.next_by(f), @second          
+        end
       end
-      
+            
       should "have no previous bean" do
         assert_nil @first.prev
+        [:text, :number].each do |f|
+          assert_nil @first.prev_by(f)
+        end
       end
-      
+            
     end
 
     context "the second bean" do
     
       should "have the first as prev bean" do
         assert_equal @second.prev, @first
+        [:text, :number].each do |f|
+          assert_equal @second.prev_by(f), @first          
+        end
       end
 
       should "have the third as next bean" do
         assert_equal @second.next, @third
+        [:text, :number].each do |f|
+          assert_equal @second.next_by(f), @third          
+        end
       end
       
     end
@@ -37,10 +49,16 @@ class BrowsableTest < ActiveSupport::TestCase
     
       should "have the second as prev bean" do
         assert_equal @third.prev, @second
+        [:text, :number].each do |f|
+          assert_equal @third.prev_by(f), @second          
+        end
       end
       
       should "have no next bean" do
         assert_nil @third.next
+        [:text, :number].each do |f|
+          assert_nil @third.next_by(f)
+        end
       end
       
     end

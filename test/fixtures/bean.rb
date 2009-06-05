@@ -3,6 +3,11 @@ class Bean < ActiveRecord::Base
 end
 
 class CategorizedBean < ActiveRecord::Base
-  acts_as_browsable :scope => [:category] # should be scope
+  acts_as_browsable :scope => :category
   set_table_name 'beans'
 end
+
+# class CategorizedReversedBean < ActiveRecord::Base
+#   acts_as_browsable :scope => :category, :order => :desc
+#   set_table_name 'beans'
+# end
