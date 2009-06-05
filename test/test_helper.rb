@@ -21,11 +21,3 @@ load(File.join(plugin_test_dir, "db", "schema.rb"))
 Dir["#{plugin_test_dir}/fixtures/*.rb"].each {|file| require file }
 
 Fixtures.create_fixtures(File.dirname(__FILE__) + "/fixtures/", ActiveRecord::Base.connection.tables) 
- 
-# class ActiveSupport::TestCase #:nodoc:
-#   fixture_path = File.dirname(__FILE__) + "/fixtures/"
-#   use_transactional_fixtures = true
-#   use_instantiated_fixtures  = false
-#   
-#   fixtures :beans
-# end
