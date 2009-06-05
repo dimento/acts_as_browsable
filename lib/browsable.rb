@@ -5,6 +5,8 @@ rescue LoadError
   require "active_support"
 end
 
+require 'browsable/view_helpers'
+
 module Dimento
   module Acts
     module Browsable
