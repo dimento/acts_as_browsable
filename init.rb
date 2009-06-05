@@ -1,1 +1,1 @@
-ActiveRecord::Base.send :include, Browsable
+ActiveRecord::Base.send :include, Dimento::Acts::Browsable
