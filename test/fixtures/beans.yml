@@ -1,0 +1,16 @@
+first:
+  id: 1
+  number: 1
+  text: a
+  category: lame
+second:
+  id: 2
+  number: 2
+  text: b
+  category: great
+third:
+  id: 3
+  number: 3
+  text: c
+  category: lame
+  
