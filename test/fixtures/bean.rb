@@ -3,6 +3,6 @@ class Bean < ActiveRecord::Base
 end
 
 class CategorizedBean < ActiveRecord::Base
-  acts_as_browsable :equal_fields => [:category] # should be scope
+  acts_as_browsable :scope => [:category] # should be scope
   set_table_name 'beans'
 end

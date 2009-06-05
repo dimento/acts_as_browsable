@@ -18,7 +18,7 @@ module Dimento
     	module ClassMethods
     		# Specify a model as “acts_as_browsable” to get the browsable functionality for it. To 
     		# determine fields/attributes values that have to be equal for the next or previous 
-    		# object, assign <tt>:equal_fields</tt> with an array of desired fields. You can also define
+    		# object, assign <tt>:scope</tt> with an array of desired fields. You can also define
     		# the <tt>:order</tt>.
     		#
     		# The following is the default usage
@@ -33,13 +33,10 @@ module Dimento
     		# 	class Post < ActiveRecord::Base
     		# 		acts_as_browsable :equal_fields    => [ :language, :customer_id ]
     		# 	end
-    		def acts_as_browsable(*args)
-    			equal_fields                          = begin
-    				args.first[:equal_fields]
-    			rescue NoMethodError
-    				[]				
-    			end
-    			write_inheritable_attribute(:equal_fields, equal_fields)
+    		def acts_as_browsable(opts = {})
+    			scope = opts.delete(:scope) || []
+    			scope = [scope] unless scope.is_a? Array
+    			write_inheritable_attribute(:browsable_scope, scope)
 			
     			send :include, Browsable::InstanceMethods
     		end
@@ -78,19 +75,19 @@ module Dimento
     			desired_direction                     = direction == :next ? ">" : "<"
     			order_direction                       = direction == :next ? " ASC" : " DESC"
 			
-    			self.class.first :conditions          => prepare_condition(field, desired_direction, self.class.read_inheritable_attribute(:equal_fields)), :order => field.to_s + order_direction
+    			self.class.first :conditions          => prepare_condition(field, desired_direction, self.class.read_inheritable_attribute(:browsable_scope)), :order => field.to_s + order_direction
     		end    
     	end
 	
     	protected
-    	def prepare_condition(field, direction, equal_fields)
+    	def prepare_condition(field, direction, scoped_fields)
     		unprepared_condition                   = "#{field.to_s} #{direction} :#{field.to_s}"
     		condition_values                       = { }
     		condition_values[field.to_sym]         = send(field.to_sym)
 	
-    		equal_fields.each do |equal_field|
-    			unprepared_condition += " AND #{equal_field.to_s} = :#{equal_field.to_s}"
-    			condition_values[equal_field.to_sym]  = send(equal_field.to_sym)
+    		scoped_fields.each do |scoped_field|
+    			unprepared_condition += " AND #{scoped_field.to_s} = :#{scoped_field.to_s}"
+    			condition_values[scoped_field.to_sym]  = send(scoped_field.to_sym)
     		end
 	
     		[unprepared_condition, condition_values]
