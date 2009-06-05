@@ -17,7 +17,7 @@ Usage
 
 Specify a model as “acts_as_browsable” to get the browsable functionality for it. To 
 determine fields/attributes values that have to be equal for the next or previous 
-object, assign <tt>:equal_fields</tt> with an array of desired fields. You can also define
+object, assign <tt>:scope</tt> with an array of desired fields. You can also define
 the <tt>:order</tt>.
 
 The following is the default usage
@@ -42,7 +42,7 @@ The following usage ensures to return only those objects with the same attribute
 language and customer_id of the recent object.
 
 	class Post < ActiveRecord::Base
-		acts_as_browsable :equal_fields => [ :language, :customer_id ]
+		acts_as_browsable :scope => [ :language, :customer_id ]
 	end
 	
 
